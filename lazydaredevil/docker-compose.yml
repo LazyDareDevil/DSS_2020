@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  dss2020:
+    image: ldd_trend
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    build:
+      context: .
+      dockerfile: ./Dockerfile

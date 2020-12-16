@@ -53,8 +53,8 @@ def collect_prepare_data(client, index_):
 			print ("\nThe client host:", host, "is invalid or cluster is not running")
 			client = None
 	dfdata = None
-	print("Waiting for Elastic to load data")
 	if client != None:
+		print("Waiting for Elastic to load data")
 		elastic_done = True
 		number_rows = 0
 		while number_rows == 0:
@@ -62,10 +62,7 @@ def collect_prepare_data(client, index_):
 				index = index_,
 				params = {"size" : 0}
 			)
-			try:
-				number_rows = int(resp["hits"]["total"]["value"])
-			except Exception:
-				return None
+			number_rows = int(resp["hits"]["total"]["value"])
 		if number_rows != 0:
 			resp = client.search(
 				index = index_,
@@ -133,15 +130,21 @@ def keywords_stats(dfdata):
 def hello():
 	return render_template('index.html')
 
+def if_error():
+	print("Some errors, try to rebuild app")
+	with open('templates/index.html', 'w') as f:
+		f.write("<!DOCTYPE html><html><title>Trend Analyze</title><head></head><body><h1>Something went wring, try to rebuild app</h1></body></html>")
+
 if __name__ == "__main__":
 	dfdata = collect_prepare_data(client, index)
 	if dfdata is not None:
 		try:
+			print("Waining for analyse")
 			sentiment_analyse(dfdata)
 			keywords_stats(dfdata)
 			print("Analysed")
 		except Exception:
-			print("Some errors, try to rebuild app")
+			if_error()
 	else:
-		print("Some errors, try to rebuild app")
-	app.run(debug=True)
+		if_error()
+	app.run()
