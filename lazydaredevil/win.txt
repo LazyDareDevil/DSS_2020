@@ -1,0 +1,38 @@
+stop all running containers
+FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
+
+rm all containers
+FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
+
+
+docker-compose -f .\docker-compose-infra.yml up -d elastic_search
+docker-compose -f .\docker-compose-infra.yml up -d protobuf_sender_ui
+docker-compose -f .\docker-compose-services.yml up -d java-crawler
+docker-compose -f .\docker-compose-infra.yml up -d elastic_search_ui
+
+to aggregate data from publics
+
+https://localhost:6969
+
+	gRPS Service Target : host.docker.internal:9090
+	Restart Connection: yes
+	Use local proto: vk-crawler\java-proto-handler\src\main\proto\crawler.proto
+	<Connect>
+	Services: com.hronosf/crawler.controller.crawler
+	Methods: startCrawlingAsServiseActor
+	"toParse": ["<link_of_public_without_vk.com>"]
+	<Submit>
+
+(unnessesary) to show elastic data
+
+http://localhost:1358
+
+	URL for cluster: http://localhost:9200/
+	Appname: wall_posts
+	<Connect>
+
+if crawler doesn't up:
+	docker-compose -f .\docker-compose-services.yml down
+	docker-compose -f .\docker-compose-services.yml up -d java-crawler
+
+

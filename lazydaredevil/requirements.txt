@@ -1,0 +1,6 @@
+elasticsearch
+pandas
+matplotlib
+dostoevsky
+summa
+pymorphy2

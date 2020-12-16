@@ -1,0 +1,73 @@
+Ubuntu
+
+Make sure, that $/usr/local/bin$ in your PATH
+
+Installations:
+
+	Docker
+				sudo apt-get update
+
+				sudo apt-get install \
+					apt-transport-https \
+					ca-certificates \
+					curl \
+					gnupg-agent \
+					software-properties-common
+
+				curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+				sudo apt-key fingerprint 0EBFCD88
+
+						pub   rsa4096 2017-02-22 [SCEA]
+							9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+						uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+						sub   rsa4096 2017-02-22 [S]
+
+				sudo add-apt-repository \
+				"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+				$(lsb_release -cs) \
+				stable"
+				
+				sudo apt-get update
+				sudo apt-get install docker-ce docker-ce-cli containerd.io
+				sudo groupadd docker
+				sudo usermod -aG docker $USER
+				newgrp docker
+				docker --version
+
+	kind
+				curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+				chmod +x ./kind
+				sudo mv ./kind /usr/local/bin/kind
+				kind --version
+
+	kubernetes-cli
+				curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.1/bin/linux/amd64/kubectl
+				chmod +x ./kubectl
+				sudo mv ./kubectl /usr/local/bin/kubectl
+				kubectl --help
+
+	helm
+				download from https://github.com/helm/helm/releases nessesary version (3.4.0) for your architecture
+				tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
+				sudo mv linux-amd64/helm /usr/local/bin/helm
+				helm --help
+
+	istio
+				download from https://github.com/istio/istio/releases/tag/1.7.4 tar for your architecture
+				tar -zxvf istioclt-1.7.4-linux-amd64.tar.gz
+				sudo mv istioclt-1.7.4/bin/istioclt /usr/local/bin
+				istioclt --help
+
+
+To deploy ( it takes about 20-30 minutes ):
+				1. open bash
+				2. cd k8s-helm
+				3. sh deploy.sh
+
+For local startup:
+				1. open bas
+				2. chmod +x run.sh (if "./run.sh build" provides Permission Denied)
+					./run.sh build (build all images - it takes about 20+ minutes to build depending on the your hardware)
+					or
+					./run.sh pull (pull latest images from my [docker hub](https://hub.docker.com/u/hronosf) - it takes about 5-10 minutes to download depending on your network conection) 
+				3. ./run.sh up -d
