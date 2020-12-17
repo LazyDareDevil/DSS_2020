@@ -1,3 +1,12 @@
+firstly, pull nessesary images:
+	open git bash
+	cd vk-crawler
+	./run.sh pull
+
+secondly, build trend analysis image:
+	cd ../lazydaredevil
+	docker build -t lazydaredevil .
+
 for starting aggragator, database and trend analysis:
 	cd vk-crawler
 	docker-compose -f .\docker-compose-infra.yml up -d elastic_search
@@ -5,33 +14,35 @@ for starting aggragator, database and trend analysis:
 	docker-compose -f .\docker-compose-services.yml up -d java-crawler
 	docker-compose -f .\docker-compose-infra.yml up -d elastic_search_ui
 	cd ../lazydaredevil
-	docker build -t lazydaredevil .
 	docker-compose -f .\docker-compose.yml up -d lazydaredevil
+
+look at java-crawler logs, often it is not up (shows mwsssage, that sth wrong with DB)
 
 if crawler doesn't up:
 	docker-compose -f .\docker-compose-services.yml down
 	docker-compose -f .\docker-compose-services.yml up -d java-crawler
 
 to aggregate data from publics
+	https://localhost:6969
 
-https://localhost:6969
+		gRPS Service Target : host.docker.internal:9090
+		Restart Connection: yes
+		Use local proto: vk-crawler\java-proto-handler\src\main\proto\crawler.proto
+		<Connect>
+		Services: com.hronosf/crawler.controller.crawler
+		Methods: startCrawlingAsServiseActor
+		"toParse": ["<link_of_public_without_vk.com>"]
+		<Submit>
 
-	gRPS Service Target : host.docker.internal:9090
-	Restart Connection: yes
-	Use local proto: vk-crawler\java-proto-handler\src\main\proto\crawler.proto
-	<Connect>
-	Services: com.hronosf/crawler.controller.crawler
-	Methods: startCrawlingAsServiseActor
-	"toParse": ["<link_of_public_without_vk.com>"]
-	<Submit>
+to open trend
+	https://localhost:5000
 
 (unnessesary) to show elastic data
+	http://localhost:1358
 
-http://localhost:1358
-
-	URL for cluster: http://localhost:9200/
-	Appname: wall_posts
-	<Connect>
+		URL for cluster: http://localhost:9200/
+		Appname: wall_posts
+		<Connect>
 
 stop all running containers
 FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
