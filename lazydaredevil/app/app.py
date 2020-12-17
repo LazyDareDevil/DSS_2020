@@ -58,11 +58,14 @@ def collect_prepare_data(client, index_):
 		elastic_done = True
 		number_rows = 0
 		while number_rows == 0:
-			resp = client.search(
-				index = index_,
-				params = {"size" : 0}
-			)
-			number_rows = int(resp["hits"]["total"]["value"])
+			try:
+				resp = client.search(
+					index = index_,
+					params = {"size" : 0}
+				)
+				number_rows = int(resp["hits"]["total"]["value"])
+			except Exception:
+				continue
 		if number_rows != 0:
 			resp = client.search(
 				index = index_,
