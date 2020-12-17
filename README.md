@@ -15,21 +15,18 @@ Go to [Spark-Master UI](http://localhost:8080) and check that all services conne
 look at java-crawler logs, often it is not up (shows messsage, that sth wrong with DB), then restart all containers
 
 Second, build trend analysis image:
-	cd ../lazydaredevil
-	docker build -t lazydaredevil .
-	docker-compose -f .\docker-compose.yml up -d lazydaredevil
+1. cd ../lazydaredevil
+2. docker build -t lazydaredevil .
+3. docker-compose -f .\docker-compose.yml up -d lazydaredevil
 
+How to use:
 1. go to [admin app](http://localhost:4201)
 2. login to ["Vkontakte"](https://vk.com) if needed (app will automaticly redirect to vk OAuth2 page)
 3. search for groups/user which walls you want to parse
 4. checkout them (here crawler starts)
 5. go to [trend analysis](http://localhost:5000)
 
-To remove all containers:
-	In cmd
-		stop all running containers
-		FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
-
-		rm all containers
-		FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
+To remove all containers in cmd
+1. FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
+2. FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
 
