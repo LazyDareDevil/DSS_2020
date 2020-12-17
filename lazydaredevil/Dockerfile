@@ -8,6 +8,6 @@ RUN python3 -m dostoevsky download fasttext-social-network-model
 WORKDIR /app
 COPY /app .
 
-EXPOSE 9200
+EXPOSE 5000
 ENTRYPOINT ["sh", "-c"]
 CMD ["python3 app.py"]
