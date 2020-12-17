@@ -1,5 +1,9 @@
 version: '3.4'
 
+networks:
+  vk-crawler_crawler_internal:
+    external: true
+
 services:
   lazydaredevil:
     image: lazydaredevil
@@ -10,4 +14,4 @@ services:
       context: .
       dockerfile: ./Dockerfile
     networks:
-      - crawler_internal
+      - vk-crawler_crawler_internal

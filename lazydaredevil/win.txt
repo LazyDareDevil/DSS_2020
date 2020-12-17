@@ -35,4 +35,6 @@ if crawler doesn't up:
 	docker-compose -f .\docker-compose-services.yml down
 	docker-compose -f .\docker-compose-services.yml up -d java-crawler
 
-
+cd lazydaredevil
+docker build -t lazydaredevil .
+docker-compose -f .\docker-compose.yml up -d lazydaredevil
