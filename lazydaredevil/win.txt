@@ -44,9 +44,10 @@ to open trend
 		Appname: wall_posts
 		<Connect>
 
-stop all running containers
-FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
+In cmd
+	stop all running containers
+	FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
 
-rm all containers
-FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
+	rm all containers
+	FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
 
