@@ -1,16 +1,16 @@
-stop all running containers
-FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
+for starting aggragator, database and trend analysis:
+	cd vk-crawler
+	docker-compose -f .\docker-compose-infra.yml up -d elastic_search
+	docker-compose -f .\docker-compose-infra.yml up -d protobuf_sender_ui
+	docker-compose -f .\docker-compose-services.yml up -d java-crawler
+	docker-compose -f .\docker-compose-infra.yml up -d elastic_search_ui
+	cd ../lazydaredevil
+	docker build -t lazydaredevil .
+	docker-compose -f .\docker-compose.yml up -d lazydaredevil
 
-rm all containers
-FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
-
-cd vk-crawler
-docker-compose -f .\docker-compose-infra.yml up -d elastic_search
-docker-compose -f .\docker-compose-infra.yml up -d protobuf_sender_ui
-docker-compose -f .\docker-compose-services.yml up -d java-crawler
-docker-compose -f .\docker-compose-infra.yml up -d elastic_search_ui
-cd ../lazydaredevil
-docker-compose -f .\docker-compose.yml up -d lazydaredevil
+if crawler doesn't up:
+	docker-compose -f .\docker-compose-services.yml down
+	docker-compose -f .\docker-compose-services.yml up -d java-crawler
 
 to aggregate data from publics
 
@@ -33,10 +33,9 @@ http://localhost:1358
 	Appname: wall_posts
 	<Connect>
 
-if crawler doesn't up:
-	docker-compose -f .\docker-compose-services.yml down
-	docker-compose -f .\docker-compose-services.yml up -d java-crawler
+stop all running containers
+FOR /f "tokens=*" %i IN ('docker ps -q') DO docker stop %i
 
-cd lazydaredevil
-docker build -t lazydaredevil .
-docker-compose -f .\docker-compose.yml up -d lazydaredevil
+rm all containers
+FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i
+
