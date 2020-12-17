@@ -1,11 +1,13 @@
 version: '3.4'
 
 services:
-  dss2020:
-    image: ldd_trend
-    container_name: elasticsearch
+  lazydaredevil:
+    image: lazydaredevil
+    container_name: lazydaredevil
     ports:
-      - "9200:9200"
+      - "5000:5000"
     build:
       context: .
       dockerfile: ./Dockerfile
+    networks:
+      - crawler_internal

@@ -18,7 +18,7 @@ from flask import Flask, render_template
 app = Flask(__name__)
 matplotlib.use('AGG')
 
-host = 'localhost'
+host = 'host.docker.internal'
 port = 9200
 index = "wall_posts"
 client = Elasticsearch([{'host': host, 'port': port}])

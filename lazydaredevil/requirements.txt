@@ -1,6 +1,7 @@
 elasticsearch
 pandas
 matplotlib
-dostoevsky
 summa
+dostoevsky
 pymorphy2
+flask
