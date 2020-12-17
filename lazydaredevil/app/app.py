@@ -141,13 +141,15 @@ def if_error():
 if __name__ == "__main__":
 	dfdata = collect_prepare_data(client, index)
 	if dfdata is not None:
-		try:
-			print("Waining for analyse")
-			sentiment_analyse(dfdata)
-			keywords_stats(dfdata)
-			print("Analysed")
-		except Exception:
-			if_error()
+		while not analyze_done:
+			try:
+				print("Waining for analyse")
+				sentiment_analyse(dfdata)
+				keywords_stats(dfdata)
+				analyze_done = True
+			except Exception:
+				if_error()
+		print("Analysed")
 	else:
 		if_error()
 	app.run(host='0.0.0.0', port=5000)
